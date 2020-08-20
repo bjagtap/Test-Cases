@@ -1,0 +1,39 @@
+import os
+import pandas as pd
+os.getcwd() 
+path = "C:\\Users\\bjagtap\\Desktop\\PHM Walkthru\\Feeds"#This will give the default path where this file is saved 
+os.chdir(path)              #changing the file path
+files = os.listdir()
+
+DetailFeed_header_name = ["SOURCE_HCP_ID_QUAL", "SOURCE_HCP_ID","NPI","ME_ID","HCP_ID1_QUAL","HCP_ID1","HCP_ID2_QUAL",
+                            "HCP_ID2","HCP_ID3_QUAL","HCP_ID3","HCP_ID4_QUAL","HCP_ID4","HCP_ID5_QUAL","HCP_ID5",
+                            "FIRST_NAME","LAST_NAME","GENDER","DATE_OF_BIRTH","CREDENTIALS_DESC","SPECIALITY_DESC",
+                            "PRIMARY_ADDRESS_1","PRIMARY_ADDRESS_2","PRIMARY_ADDRESS_3","PRIMARY_CITY","PRIMARY_STATE",
+                            "PRIMARY_COUNTRY","PRIMARY_ZIP_CODE","SECONDARY_ADDRESS_1","SECONDARY_ADDRESS_2",
+                            "SECONDARY_ADDRESS_3","SECONDARY_CITY","SECONDARY_STATE","SECONDARY_COUNTRY",
+                            "SECONDARY_ZIP_CODE","TERTIARY_ADDRESS_1","TERTIARY_ADDRESS_2","TERTIARY_ADDRESS_3",
+                            "TERTIARY_CITY","TERTIARY_STATE","TERTIARY_COUNTRY","TERTIARY_ZIP_CODE","EMAIL_ADDRESS",
+                            "TEL_NUMBER","FAX_NUMBER","HCP_SOURCE_LIST_TYPE","REP_ID_QUAL","REP_ID","TERRITORY_CODE"]
+
+DetailsFeed_files = [file for file in files if 'DETAILS' in file]   
+
+for file in DetailsFeed_files:
+    print ("FILE :", file)
+    df =  pd.read_csv(file)
+    
+    if len(set(df.columns)) == len(DetailFeed_header_name):
+        print("DetailsFeed Headers Length are Matching")
+    else:
+        print("DeailsFeed Headers Length are Not Matching")
+
+    columns_mismatch = [(i,j) for i, j in zip(df.columns, DetailFeed_header_name) if i != j]
+    
+    print ("columns missed are : %s "%(columns_mismatch))
+    
+    print ("\n")
+
+#Header field Sequesnce check:
+df_cols_index = {i:df.columns[i] for i in range(0, len(df.columns))}
+for k,v in df_cols_index.items():
+        if v != DetailFeed_header_name[k]:
+            print ("Sequence mismatch : %s - %s"%(v, DetailFeed_header_name[k]))

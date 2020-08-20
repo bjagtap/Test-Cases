@@ -1,0 +1,44 @@
+select * from amgen.tbresponsedata(nolock) where Startdate = '20191023' and Enddate = '20191031' and DrugListMatchkey in ('4159,4195','4160,4194')
+
+
+
+select  COUNT(*) Total_records,
+case when Disposition_cd='WE.6.4' then 'Engagement'
+when Disposition_cd='WE.6.13' then 'Exposure'
+when Disposition_cd='WE.6.11' then 'Click'
+else 'NA' End activity,Disposition_cd
+from dwmedprostaging.amgen.tbresponsedata
+where brand_abbreviation like '%ENBREL-RHEUM%' and
+response_date between '20200401' and '20200430'
+--and Disposition_cd='WE.6.13'
+group by case when Disposition_cd='WE.6.4' then 'Engagement'
+when Disposition_cd='WE.6.13' then 'Exposure'
+when Disposition_cd='WE.6.11' then 'Click'
+else 'NA' End,Disposition_cd
+order by 2
+
+select factopportunityname,campaign_code,offer_code, brand_abbreviation, Channel_cd, vendor_cd,Broadcastname, count(*) Counts
+from dwmedprostaging.amgen.tbresponsedata(nolock) where Startdate = '20200401' and Enddate = '20200430' and brand_abbreviation like '%ENBREL-RHEUM%' 
+group by campaign_code,offer_code, brand_abbreviation, Channel_cd, vendor_cd,Broadcastname,factopportunityname
+order by Broadcastname
+
+
+select * from dwmedprostaging.amgen.tbresponsedata(nolock) where Startdate = '20200401' and Enddate = '20200430' 
+and ( Primary_keycode is null or Primary_keycode =''
+or last_name is null or last_name =''
+or campaign_code is null or campaign_code =''
+or offer_code is null or offer_code =''
+or response_date is null or response_date =''
+or brand_abbreviation is null or brand_abbreviation =''
+or channel_cd is null or channel_cd =''
+or Vendor_cd is null or Vendor_cd =''
+or Disposition_cd is null or Disposition_cd ='')
+
+
+select distinct Disposition_cd,factopportunityname,campaign_code,offer_code, brand_abbreviation, Channel_cd, vendor_cd
+from dwmedprostaging.amgen.tbresponsedata(nolock) where  Startdate = '20200401' and Enddate = '20200430' and brand_abbreviation like '%ENBREL-RHEUM%' 
+
+
+select distinct muid from DWHCP.[ua].[vw_EmailSuppression] a with(nolock)
+where muid in (select masteruserid from dwmedprostaging.amgen.tbresponsedata(nolock) where Startdate = '20200401' and Enddate = '20200430' 
+and DrugListMatchkey in ('4159,4195','4160,4194'))

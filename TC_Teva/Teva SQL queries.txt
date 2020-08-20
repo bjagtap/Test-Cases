@@ -1,0 +1,16 @@
+
+Select count(*) from (
+Select NPI,First Name,[Last Name],[Address Line 1],[Address Line 2],City,State,Zip Code,Profession,Specialty,Vendor,Brand Name,
+Indication,Tactic Name,Creative Name,Email Campaign Name,[Subject Line],Placement,[Banner Size],[Activity Timestamp],[Activity Type],
+URL,[Description of Link Clicked],[Device Type]
+from 
+DWMedprostaging.teva.tbTransactionalResponse
+where startdatekey='20200701' and enddatekey='20200731')TGT
+
+
+Select top 10 * from DWMedprostaging.teva.tbTransactionalResponse
+where startdatekey='20200701' and enddatekey='20200731'
+
+
+
+select count(*), [Activity Type] from teva.teva_austedo group by [Activity Type]

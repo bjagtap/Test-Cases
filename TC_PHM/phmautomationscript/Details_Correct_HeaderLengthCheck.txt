@@ -1,0 +1,53 @@
+import os
+import pandas as pd
+os.getcwd() 
+path = "C:\\Users\\bjagtap\\Desktop\\PHM Walkthru\\Feeds"#This will give the default path where this file is saved 
+os.chdir(path)              #changing the file path
+files = os.listdir()
+
+files
+
+####  Activity Files Headers Check ####
+DetailFeed_header_name = ["SOURCE_HCP_ID_QUAL","SOURCE_HCP_ID","NPI","ME_ID","HCP_ID1_QUAL","HCP_ID1","HCP_ID2_QUAL",
+                            "HCP_ID2","HCP_ID3_QUAL","HCP_ID3","HCP_ID4_QUAL","HCP_ID4","HCP_ID5_QUAL","HCP_ID5",
+                            "FIRST_NAME","LAST_NAME","GENDER","DATE_OF_BIRTH","CREDENTIALS_DESC","SPECIALITY_DESC",
+                            "PRIMARY_ADDRESS_1","PRIMARY_ADDRESS_2","PRIMARY_ADDRESS_3","PRIMARY_CITY","PRIMARY_STATE",
+                            "PRIMARY_COUNTRY","PRIMARY_ZIP_CODE","SECONDARY_ADDRESS_1","SECONDARY_ADDRESS_2",
+                            "SECONDARY_ADDRESS_3","SECONDARY_CITY","SECONDARY_STATE","SECONDARY_COUNTRY",
+                            "SECONDARY_ZIP_CODE","TERTIARY_ADDRESS_1","TERTIARY_ADDRESS_2","TERTIARY_ADDRESS_3",
+                            "TERTIARY_CITY","TERTIARY_STATE","TERTIARY_COUNTRY","TERTIARY_ZIP_CODE","EMAIL_ADDRESS",
+                            "TEL_NUMBER","FAX_NUMBER","HCP_SOURCE_LIST_TYPE","REP_ID_QUAL","REP_ID","TERRITORY_CODE"]
+
+DetailFeed_header_len = len(DetailFeed_header_name )                                        #this will give the lenght of the list
+#print(DetailFeed_header_len )
+
+DetailFeed_header_set = set(DetailFeed_header_name)                                        #this will create a set of the values in the list
+print(len(DetailFeed_header_set))
+
+DetailsFeed_files = [file for file in files if 'DETAILS' in file]   
+#print(DetailsFeed_files)
+
+for file in DetailsFeed_files:
+    h =  pd.read_csv(file)
+    #print(h)
+   # h  
+    
+#h
+
+for file in DetailsFeed_files:
+    h =  pd.read_csv(file)
+#     print(h)
+    if len(set(h)) == DetailFeed_header_len:
+        print("DetailsFeed Headers Matching")
+    else:
+        print("DeailsFeed Headers Not Matching")
+		
+#cross check
+DetailFeed_header_len
+
+len(set(h))
+
+
+    
+    
+        

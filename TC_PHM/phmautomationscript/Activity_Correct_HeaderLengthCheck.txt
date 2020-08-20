@@ -1,0 +1,58 @@
+import os
+import pandas as pd
+os.getcwd() 
+path = "C:\\Users\\bjagtap\\Desktop\\PHM Walkthru\\Feeds"#This will give the default path where this file is saved 
+os.chdir(path)              #changing the file path
+files = os.listdir()
+
+files
+
+####  Activity Files Headers Check ####
+Activity_header_name = ["TRANSACTION_ID","SESSION_ID","PARENT_TRANSACTION_ID","CONTENT_LOCATION_NAME","CHANNEL_NAME","SOURCE_HCP_ID_QUAL",
+"SOURCE_HCP_ID","ACTIVITY_NAME","ACTIVITY_DATETIME","ACTIVITY_DURATION_VALUE","DEVICE_TYPE_NAME","CAMPAIGN_CODE","CAMPAIGN_NAME",
+"BRAND_NAME","PLACEMENT_NAME","PUBLISHER_PRODUCT_CODE","PUBLISHER_PRODUCT_NAME","PUBLISHER_PRODUCT_START_DATETIME","PUBLISHER_PRODUCT_END_DATETIME",
+"TACTIC_CODE","TACTIC_NAME","EVENT_CODE","REFERRAL_ID_QUAL","REFERRAL_ID","REFERRAL_CONTENT_ID","TRAFFIC_SOURCE_TYPE_NAME","CONTENT_ID",
+"CONTENT_NAME","DESTINATION_ID_QUAL","DESTINATION_ID","DESTINATION_CONTENT_ID","KEY_MSG_DESC","KEY_MSG_1","KEY_MSG_2","KEY_MSG_3","KEY_MSG_4",
+"KEY_MSG_5","ATTRIBUTE1_VALUE_QUAL","ATTRIBUTE1_VALUE","ATTRIBUTE2_VALUE_QUAL","ATTRIBUTE2_VALUE","ATTRIBUTE3_VALUE_QUAL","ATTRIBUTE3_VALUE",
+"ATTRIBUTE4_VALUE_QUAL","ATTRIBUTE4_VALUE","ATTRIBUTE5_VALUE_QUAL","ATTRIBUTE5_VALUE","ATTRIBUTE6_VALUE_QUAL","ATTRIBUTE6_VALUE",
+"ATTRIBUTE7_VALUE_QUAL","ATTRIBUTE7_VALUE","ATTRIBUTE8_VALUE_QUAL","ATTRIBUTE8_VALUE","ATTRIBUTE9_VALUE_QUAL","ATTRIBUTE9_VALUE",
+"ATTRIBUTE10_VALUE_QUAL","ATTRIBUTE10_VALUE","ATTRIBUTE11_VALUE_QUAL","ATTRIBUTE11_VALUE","ATTRIBUTE12_VALUE_QUAL","ATTRIBUTE12_VALUE",
+"ATTRIBUTE13_VALUE_QUAL","ATTRIBUTE13_VALUE","ATTRIBUTE14_VALUE_QUAL","ATTRIBUTE14_VALUE","ATTRIBUTE15_VALUE_QUAL","ATTRIBUTE15_VALUE",
+"ATTRIBUTE16_VALUE_QUAL","ATTRIBUTE16_VALUE","ATTRIBUTE17_VALUE_QUAL","ATTRIBUTE17_VALUE","ATTRIBUTE18_VALUE_QUAL","ATTRIBUTE18_VALUE",
+"ATTRIBUTE19_VALUE_QUAL","ATTRIBUTE19_VALUE","ATTRIBUTE20_VALUE_QUAL","ATTRIBUTE20_VALUE","ATTRIBUTE21_VALUE_QUAL","ATTRIBUTE21_VALUE",
+"ATTRIBUTE22_VALUE_QUAL","ATTRIBUTE22_VALUE","ATTRIBUTE23_VALUE_QUAL","ATTRIBUTE23_VALUE","ATTRIBUTE24_VALUE_QUAL","ATTRIBUTE24_VALUE",
+"ATTRIBUTE25_VALUE_QUAL","ATTRIBUTE25_VALUE"]
+
+Activity_header_len = len(Activity_header_name)                                        #this will give the lenght of the list
+#print(Activity_header_len)
+
+Activity_header_set = set(Activity_header_name)                                        #this will create a set of the values in the list
+print(len(Activity_header_set))
+
+Activity_files = [file for file in files if 'ACTIVITY' in file]   
+#print(Activity_files)
+
+for file in Activity_files:
+    h =  pd.read_csv(file)
+    #print(h)
+   # h  
+    
+#h
+
+for file in Activity_files:
+    h =  pd.read_csv(file)
+#     print(h)
+    if len(set(h)) == Activity_header_len:
+        print("Activity Headers Matching")
+    else:
+        print("Activity Headers Not Matching")
+		
+#cross check
+Activity_header_len
+
+len(set(h))
+
+
+    
+    
+        

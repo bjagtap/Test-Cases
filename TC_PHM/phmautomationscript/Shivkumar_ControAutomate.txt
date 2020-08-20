@@ -1,0 +1,83 @@
+import pandas as pd
+import csv
+import glob
+
+
+#final columns
+cols = ['ActualFileName','ControlFileName','FileNameMatching', 'ActualRows','ControlRows','RowMatching']
+
+# files path
+path = r'C:\Users\bjagtap\Desktop\PHM Walkthru\Feeds' # use your path
+all_files=glob.glob(path+"/*.csv")
+all_files
+
+li=[]
+for filePath in all_files:
+    with open(filePath,"r") as f:
+        reader=csv.reader(f,delimiter="|")
+        row_count=len(list(reader))
+        d=[filePath.split('\\')[-1],row_count]
+        li.append(d)
+        f.close() 
+        
+   
+li
+
+df=pd.DataFrame(li,columns=['ActualFileName','ActualRows'])
+
+df
+Main_df= df[~df['ActualFileName'].str.contains('CONTROL')]
+Control_df= df[df['ActualFileName'].str.contains('CONTROL')]
+
+Control_df = Control_df.reset_index(drop=True)
+Main_df = Main_df.reset_index(drop=True)
+
+Control_df
+
+di=[]
+
+for filename in all_files:
+    if 'CONTROL' in filename:
+        df=pd.read_csv(filename,sep='|',index_col=None, header=0)
+        df['Path']=filename
+        di.append(df)
+di 
+    
+        
+        
+frame = pd.concat(di, axis=0, ignore_index=True)
+frame = frame.rename({'FILE_NAME': 'ControlFileName', 'RECORD_COUNT': 'ControlRows'}, axis=1)
+frame = frame[['ControlFileName','ControlRows']]
+
+
+r =pd.concat([Main_df, frame], axis=1)
+
+r['FileNameMatching']=r['ActualFileName'] ==r['ControlFileName']
+r['RowMatching']=r['ActualRows'] ==r['ControlRows']
+r =r[cols]
+
+print(r)
+
+#install pip Stylframe
+
+
+#Stlying and saving to excel
+from StyleFrame import StyleFrame, Styler
+sf = StyleFrame(r)
+try:
+    sf.apply_style_by_indexes(sf[sf['FileNameMatching'] == True], cols_to_style='FileNameMatching',
+                              styler_obj=Styler(bg_color='green'))
+    sf.apply_style_by_indexes(sf[sf['FileNameMatching'] == True], cols_to_style='FileNameMatching',
+                            styler_obj=Styler(bg_color='green'))
+except:
+    print("Its does not have records")
+
+    
+sf.apply_style_by_indexes(sf[sf['RowMatching'] == True], cols_to_style='RowMatching',	
+                          styler_obj=Styler(bg_color='green'))
+sf.apply_style_by_indexes(sf[sf['RowMatching'] == False], cols_to_style='RowMatching',
+                          styler_obj=Styler(bg_color='red'))
+
+sf=sf.set_column_width(columns=['ActualFileName','ControlFileName'], width=12.00)
+
+sf.to_excel('C:\\Users\\bjagtap\\Desktop\\PHM Walkthru\\test.xlsx',best_fit=cols).save()
